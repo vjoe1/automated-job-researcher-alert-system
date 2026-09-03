@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JOBSCAN // Automated Job Researcher & Alert System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> JOBSCAN//SYS</div>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="topbar-status"><span class="dot" id="statusDot"></span> <span id="statusText">connecting to feed…</span></div>
+      <a href="#" id="telegramTopbarLink" target="_blank" rel="noopener" class="telegram-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71l-4.14-3.05-2 1.93c-.23.23-.42.42-.82.42z"/></svg>
+          <span>Get alerts on Telegram</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="radar" id="radar">
+    <svg viewBox="0 0 900 900">
+      <defs>
+        <linearGradient id="sweepGradient" x1="450" y1="450" x2="900" y2="450" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#4C86FF" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#4C86FF" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <circle class="ring" cx="450" cy="450" r="150"/>
+      <circle class="ring" cx="450" cy="450" r="270"/>
+      <circle class="ring" cx="450" cy="450" r="390"/>
+      <g class="sweep-wrap" id="sweepWrap">
+        <path class="sweep" d="M450,450 L450,60 A390,390 0 0,1 750,220 Z"/>
+      </g>
+      <circle class="ping" id="ping1" cx="380" cy="300" r="4"/>
+      <circle class="ping" id="ping2" cx="600" cy="520" r="4"/>
+      <circle class="ping" id="ping3" cx="300" cy="580" r="4"/>
+      <circle class="ping" id="ping4" cx="650" cy="360" r="4"/>
+    </svg>
+  </div>
+
+  <div class="eyebrow" id="eyebrow">Welcome to</div>
+  <h1 class="hero-headline" id="headline">Automated Job Researcher <span class="amp">&</span> Alert System</h1>
+  <p class="hero-sub" id="heroSub">Every listing scraped, cleaned, and indexed automatically — search, sort and filter the full database in real time.</p>
+
+  <div class="hero-stats" id="heroStats">
+    <div class="stat">
+      <div class="stat-num" id="statJobs">—</div>
+      <div class="stat-label">Listings indexed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statScan">Live</div>
+      <div class="stat-label">Scan status</div>
+    </div>
+  </div>
+
+  <div class="hero-ctas" id="heroCtas">
+    <a href="#console" class="scroll-cta" id="scrollCta">Enter the console ↓</a>
+    <a href="#" id="telegramHeroLink" target="_blank" rel="noopener" class="telegram-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71l-4.14-3.05-2 1.93c-.23.23-.42.42-.82.42z"/></svg>
+      <span>Save jobs &amp; get alerts on Telegram</span>
+    </a>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="console" id="console">
+    <div class="console-label">// search, sort &amp; filter console</div>
+
+    <div class="mode-tabs" id="modeTabs">
+      <div class="mode-tab-bg" id="modeTabBg"></div>
+      <button class="mode-tab active" data-mode="search"><span class="label-full">Search</span></button>
+      <button class="mode-tab" data-mode="sort"><span class="label-full">Sort</span></button>
+      <button class="mode-tab" data-mode="filter"><span class="label-full">Filter</span> <span class="n" id="filterCount"></span></button>
+      <button class="mode-tab" data-mode="analytics"><span class="label-full">Analytics</span></button>
+    </div>
+
+    <div class="panel-stage" id="panelStage">
+      <div class="mode-panel visible" data-panel="search">
+        <div class="search-field">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search title, company, or description…" />
+        </div>
+        <div class="search-hint">Type a keyword to scan the <strong>entire database</strong> — leave it empty to browse everything.</div>
+      </div>
+
+      <div class="mode-panel" data-panel="sort">
+        <div class="sort-grid" id="sortGrid">
+          <button class="sort-option active" data-value="newest"><span>Newest first</span><span class="check">✓</span></button>
+          <button class="sort-option" data-value="oldest"><span>Oldest first</span><span class="check">✓</span></button>
+          <button class="sort-option" data-value="salary_high"><span>Salary: high → low</span><span class="check">✓</span></button>
+          <button class="sort-option" data-value="salary_low"><span>Salary: low → high</span><span class="check">✓</span></button>
+          <button class="sort-option" data-value="company_asc"><span>Company: A → Z</span><span class="check">✓</span></button>
+          <button class="sort-option" data-value="company_desc"><span>Company: Z → A</span><span class="check">✓</span></button>
+        </div>
+      </div>
+
+      <div class="mode-panel" data-panel="filter">
+        <div class="filter-group">
+          <div class="filter-group-label">Job type</div>
+          <div class="chip-row" data-group="job_type">
+            <button class="chip" data-value="Full-time">Full-time</button>
+            <button class="chip" data-value="Part-time">Part-time</button>
+            <button class="chip" data-value="Contract">Contract</button>
+            <button class="chip" data-value="Internship">Internship</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Location</div>
+          <div class="chip-row" data-group="remote" data-single="true">
+            <button class="chip" data-value="remote_only">Remote only</button>
+            <button class="chip" data-value="remote_and_onsite">Remote + onsite</button>
+            <button class="chip" data-value="onsite_only">Onsite only</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Posted</div>
+          <div class="chip-row" data-group="posted" data-single="true">
+            <button class="chip" data-value="today">Today</button>
+            <button class="chip" data-value="last_3_days">Last 3 days</button>
+            <button class="chip" data-value="last_week">Last week</button>
+            <button class="chip" data-value="last_month">Last month</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Experience level</div>
+          <div class="chip-row" data-group="experience_level" data-single="true">
+            <button class="chip" data-value="entry">Entry</button>
+            <button class="chip" data-value="mid">Mid</button>
+            <button class="chip" data-value="senior">Senior</button>
+            <button class="chip" data-value="staff">Staff</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Hiring status</div>
+          <div class="chip-row" data-group="actively_hiring" data-single="true">
+            <button class="chip" data-value="true">Actively hiring</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Salary range (USD)</div>
+          <div class="salary-row">
+            <input type="number" id="minSalary" placeholder="Min" />
+            <span>—</span>
+            <input type="number" id="maxSalary" placeholder="Max" />
+          </div>
+        </div>
+
+        <div class="filters-footer">
+          <button class="clear-btn" id="clearFilters">Clear all filters</button>
+        </div>
+      </div>
+
+      <div class="mode-panel" data-panel="analytics">
+        <div class="insight-grid" id="insightGrid"></div>
+        <div class="chart-grid">
+          <div class="chart-panel">
+            <div class="chart-panel-title">Most in-demand roles</div>
+            <div class="chart-wrap"><canvas id="titlesChart"></canvas><div class="chart-empty" id="titlesChartEmpty" style="display:none;">Not enough data yet</div></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-panel-title">Where the jobs are</div>
+            <div class="chart-wrap"><canvas id="locationsChart"></canvas><div class="chart-empty" id="locationsChartEmpty" style="display:none;">Not enough data yet</div></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-panel-title">Salary distribution <span class="chart-panel-subtitle" id="salaryChartSubtitle"></span></div>
+            <div class="chart-wrap"><canvas id="salaryChart"></canvas><div class="chart-empty" id="salaryChartEmpty" style="display:none;">Not enough data yet</div></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-panel-title">Experience level breakdown</div>
+            <div class="chart-wrap"><canvas id="experienceChart"></canvas><div class="chart-empty" id="experienceChartEmpty" style="display:none;">Not enough data yet</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-pills" id="activePills"></div>
+  </section>
+
+  <section class="results">
+    <div class="banner" id="demoBanner">⚠ Can't reach the API — showing demo data. Set <code>API_BASE</code> at the top of the script and make sure the FastAPI server is running.</div>
+
+    <div class="results-meta">
+      <span id="resultsCount">Loading…</span>
+      <span id="resultsRange"></span>
+    </div>
+
+    <div class="jobs-grid" id="jobsGrid"></div>
+
+    <div class="pagination" id="pagination" style="display:none;"></div>
+  </section>
+</div>
+
+<footer>
+  JOBSCAN//SYS — automated researcher &amp; alert system · built with FastAPI + GSAP
+</footer>
+
+
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/api.js"></script>
+<script src="js/components/charts.js"></script>
+<script src="js/components/ui.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+fastapi[standard]==0.141.1
+httpx==0.28.1
+numpy==2.5.2
+pandas==3.0.5
+playwright==1.62.0
+pydantic==2.13.5
+python-dotenv==1.2.3
+python-telegram-bot==22.8
+seleniumbase==4.53.5
+sentence_transformers==6.0.1
+SQLAlchemy==2.0.52
+starlette==1.6.0
