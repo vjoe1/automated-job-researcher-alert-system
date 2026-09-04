@@ -1,0 +1,28 @@
+[project]
+name = "automated-job-researcher-alert-system"
+version = "0.1.0"
+description = "Automated job research, semantic search, and Telegram alert system"
+requires-python = "==3.13.*"
+
+dependencies = [
+    "fastapi[standard]==0.141.1",
+    "httpx==0.28.1",
+    "numpy==2.5.2",
+    "pandas==3.0.5",
+    "playwright==1.62.0",
+    "pydantic==2.13.5",
+    "python-dotenv==1.2.3",
+    "python-telegram-bot==22.8",
+    "seleniumbase==4.53.5",
+    "huggingface_hub",
+    "SQLAlchemy==2.0.52",
+    "starlette==1.6.0",
+    "pytz",
+    "psycopg[binary]",
+]
+
+[tool.setuptools]
+py-modules = []
+
+[tool.fastapi]
+entrypoint = "backend.main:app"

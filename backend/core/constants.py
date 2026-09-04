@@ -1,6 +1,6 @@
 
 
-from schemas.schemas import PostedRange, ExperienceLevel
+from backend.schemas.schemas import PostedRange, ExperienceLevel
 
 POSTED_RANGE_DAYS = {
     PostedRange.today: 1,

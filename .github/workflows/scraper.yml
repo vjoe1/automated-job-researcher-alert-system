@@ -1,0 +1,43 @@
+name: Job Scraper Pipeline
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Install psycopg
+        run: pip install "psycopg[binary]"
+
+      - name: Install Playwright browsers
+        run: python -m playwright install --with-deps chromium
+
+      - name: Run scraper
+        env:
+          PSYCOPG_DATABASE_URL: ${{ secrets.PSYCOPG_DATABASE_URL }}
+        run: python scraper/main.py
+
+      - name: Run cleaner
+        env:
+          PSYCOPG_DATABASE_URL: ${{ secrets.PSYCOPG_DATABASE_URL }}
+        run: python cleaner/main.py
+
+      - name: Build embeddings
+        env:
+          PSYCOPG_DATABASE_URL: ${{ secrets.PSYCOPG_DATABASE_URL }}
+        run: python cleaner/build_embeddings.py

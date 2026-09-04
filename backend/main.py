@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import models
-from database.database import Base, engine
-from api.jobs import router as jobs_router
-from api.users import router as users_router
-from api.bot import router as bot_router
-
+from backend import models
+from backend.database.database import Base, engine
+from backend.api.jobs import router as jobs_router
+from backend.api.users import router as users_router
+from backend.api.bot import router as bot_router
 
 app = FastAPI(title="Jobs API")
 

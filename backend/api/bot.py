@@ -2,20 +2,24 @@ from typing import Annotated
 from fastapi import APIRouter, status, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from models.models import Job, BotState
-from database.database import get_db
-from schemas.schemas import JobResponse
+from backend.models.models import Job, BotState
+from backend.database.database import get_db
+from backend.schemas.schemas import JobResponse
 from datetime import datetime, UTC
 import json
 import numpy as np
-from sentence_transformers import SentenceTransformer
 import re
-from core.security import verify_bot_key
+from backend.core.security import verify_bot_key
+from huggingface_hub import InferenceClient
+import os
 
 
 router = APIRouter(prefix="/bot", tags=["Bot"])
-embedding_model = SentenceTransformer("multi-qa-MiniLM-L6-cos-v1")
 
+client = InferenceClient(
+    model="sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+    token=os.getenv("HF_TOKEN"),
+)
 
 def cosine_similarity(vec1, vec2):
     a = np.array(vec1)
@@ -65,7 +69,8 @@ def find_similar_jobs(
     Takes a free-text description from the user (their requirements or experience),
     and returns the closest matching jobs by meaning, ranked by combined score.
     """
-    query_embedding = embedding_model.encode(query).tolist()
+
+    query_embedding = client.feature_extraction(query).tolist()
     signals = extract_query_signals(query)
 
     stmt = select(Job.rowid, Job.title, Job.company, Job.location,

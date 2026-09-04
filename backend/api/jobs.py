@@ -2,10 +2,10 @@ from typing import Annotated, Optional
 from fastapi import HTTPException, Depends, Query, APIRouter
 from sqlalchemy import select, or_, func
 from sqlalchemy.orm import Session
-from models.models import Job
-from database.database import get_db
-from schemas.schemas import JobResponse, SortBy, PostedRange, RemoteMode, ExperienceLevel
-from core.constants import POSTED_RANGE_DAYS, EXPERIENCE_LEVEL_YEARS
+from backend.models.models import Job
+from backend.database.database import get_db
+from backend.schemas.schemas import JobResponse, SortBy, PostedRange, RemoteMode, ExperienceLevel
+from backend.core.constants import POSTED_RANGE_DAYS, EXPERIENCE_LEVEL_YEARS
 import time
 from sqlalchemy.orm import defer
 

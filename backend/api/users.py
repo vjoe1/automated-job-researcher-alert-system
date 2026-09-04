@@ -2,10 +2,10 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from models.models import Job, User, SavedJob
-from database.database import get_db
-from schemas.schemas import JobResponse, UserRegister
-from core.security import verify_bot_key
+from backend.models.models import Job, User, SavedJob
+from backend.database.database import get_db
+from backend.schemas.schemas import JobResponse, UserRegister
+from backend.core.security import verify_bot_key
 
 
 router = APIRouter(prefix="/users", tags=["Users"])

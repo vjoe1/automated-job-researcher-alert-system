@@ -10,3 +10,5 @@ seleniumbase==4.53.5
 sentence_transformers==6.0.1
 SQLAlchemy==2.0.52
 starlette==1.6.0
+pytz
+psycopg[binary]

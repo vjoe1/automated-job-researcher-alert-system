@@ -1,5 +1,5 @@
 /* ============ CONFIG ============ */
-const API_BASE = "http://127.0.0.1:8000"; // ← My API domain
+const API_BASE = "https://automated-job-researcher-alert-system.fastapicloud.dev"; // ← My API domain
 const TELEGRAM_BOT_URL = "https://t.me/thejob_helperbot"; // My bot link once it's ready
 const PAGE_SIZE = 12;
 
